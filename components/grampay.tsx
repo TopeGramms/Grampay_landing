@@ -3,27 +3,19 @@ import {
   Activity,
   ArrowDownRight,
   ArrowRight,
-  Bot,
   Check,
   ChevronDown,
   CircleDot,
-  Clock3,
-  Copy,
-  Gauge,
   Landmark,
-  LockKeyhole,
   Menu,
   MessageCircle,
   MoreHorizontal,
   MoveUpRight,
   Send,
   ShieldCheck,
-  Sparkles,
-  Users,
   X,
-  Zap,
 } from 'lucide-react';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const waLink = 'https://wa.me/2349135428476';
 
@@ -96,25 +88,25 @@ export function Navbar() {
   return (
     <header className={`nav-shell ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <nav className="navbar" aria-label="Primary navigation"><a href="#top" onClick={close}><Logo /></a><div className="mode-switch" aria-label="Choose GramPay experience"><button className="active" aria-pressed="true">Personal</button><a href="/mcp-landing.html" aria-label="Open Developers MCP landing page">Developers</a></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
-        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch"><button className="active" onClick={close}>Personal</button><a href="/mcp-landing.html" onClick={close}>Developers</a></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
+        <nav className="navbar" aria-label="Primary navigation"><a href="#top" onClick={close}><Logo /></a><div className="mode-switch" role="group" aria-label="Choose GramPay experience"><a className="active" href="/" aria-current="page">Personal</a><a href="/mcp-landing.html">Developers</a></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
+        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch" role="group" aria-label="Choose GramPay experience"><a className="active" href="/" aria-current="page" onClick={close}>Personal</a><a href="/mcp-landing.html" onClick={close}>Developers</a></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
       </div>
     </header>
   );
 }
 
 export function Hero() {
-  return <section id="top" className="hero page-grid"><div className="container hero-layout"><Reveal priority className="hero-copy"><SectionLabel>WhatsApp-native finance / 01</SectionLabel><h1>Your money.<br /><em>Just send a message.</em></h1><p>Send money, manage payments and handle your finances directly from the WhatsApp chat you already use.</p><div className="hero-actions"><a className="button-primary" href={waLink} target="_blank" rel="noreferrer">Try it on WhatsApp <MoveUpRight size={16} /></a><a className="button-secondary" href="#how-it-works">See how it works <ArrowDownRight size={15} /></a></div><div className="hero-note"><span className="signal-dot" />Built around the way you already communicate</div></Reveal><Reveal priority delay={.12}><WhatsAppDemo /></Reveal></div></section>;
+  return <section id="top" className="hero page-grid"><div className="container hero-layout"><Reveal priority className="hero-copy"><SectionLabel>Personal / WhatsApp</SectionLabel><h1>Your money.<br /><em>Just send a message.</em></h1><p>Send money and check a payment in WhatsApp. Review the details. Authorize only when you’re ready.</p><div className="hero-actions"><a className="button-primary" href={waLink} target="_blank" rel="noreferrer">Try it on WhatsApp <MoveUpRight size={16} /></a><a className="button-secondary" href="#how-it-works">See how it works <ArrowDownRight size={15} /></a></div></Reveal><Reveal priority delay={.12}><WhatsAppDemo /></Reveal></div></section>;
 }
 
 export function TrustBar() {
   const items = [[<MessageCircle key="wa" />, 'WhatsApp'], [<ShieldCheck key="secure" />, 'Explicit authorization'], [<Landmark key="bank" />, 'Bank transfers'], [<Activity key="status" />, 'Real-time status']];
-  return <section className="trust"><div className="container trust-row"><div className="trust-copy"><strong>Built for the way you already move money.</strong><span>No new interface to learn. No extra noise.</span></div><div className="trust-items">{items.map(([icon, label]) => <span className="trust-chip" key={label as string}>{icon}{label}</span>)}</div></div></section>;
+  return <section className="trust"><div className="container trust-row"><div className="trust-copy"><strong>The conversation is the interface.</strong><span>WhatsApp in. A clear next step out.</span></div><div className="trust-items">{items.map(([icon, label]) => <span className="trust-chip" key={label as string}>{icon}{label}</span>)}</div></div></section>;
 }
 
 export function ProblemSection() {
   const steps = ['Open banking app', 'Find recipient', 'Copy account number', 'Switch apps', 'Confirm transfer', 'Wait / check status'];
-  return <section className="section"><div className="container problem-layout"><Reveal className="problem-copy"><SectionLabel>The old way / 02</SectionLabel><div className="section-heading"><h2>Why open another app?</h2><p>Your intent is simple. The workflow usually isn&apos;t. GramPay brings the transaction into the conversation that started it.</p></div></Reveal><Reveal delay={.1}><div className="workflow">{steps.map((step, index) => <Fragment key={step}><div className="workflow-item"><span className="mono">0{index + 1}</span><br />{step}</div>{index < steps.length - 1 && <div className="workflow-arrow"><ArrowRight size={14} /></div>}</Fragment>)}<div className="workflow-end"><span>Collapse the workflow</span><strong>Just send a message.</strong><ArrowRight size={22} color="var(--brand)" /></div></div></Reveal></div></section>;
+  return <section className="section problem-section"><div className="container problem-layout"><Reveal className="problem-copy"><SectionLabel>Before the message / 02</SectionLabel><div className="section-heading"><h2>One request. Too many steps.</h2><p>A quick transfer can mean leaving the conversation, opening another app, and checking back to see what happened.</p></div></Reveal><Reveal delay={.1}><div className="workflow"><div className="workflow-list">{steps.map((step, index) => <div className="workflow-item" key={step}><span className="mono">0{index + 1}</span><span>{step}</span></div>)}</div><div className="workflow-end"><span>With GramPay</span><strong>“Send ₦50,000 to David.”</strong></div></div></Reveal></div></section>;
 }
 
 const howSteps = [
@@ -133,30 +125,14 @@ export function HowItWorks() {
 }
 
 const featureData = [
-  { icon: <Sparkles />, title: 'Natural language payments', body: 'Tell it what you want. No complicated menus.', demo: 'intent / understood' },
-  { icon: <MessageCircle />, title: 'WhatsApp-native', body: 'No new app. No new interface.', demo: 'familiar / ready' },
-  { icon: <LockKeyhole />, title: 'Secure authorization', body: 'Sensitive transactions require explicit authorization.', demo: 'review / confirm' },
-  { icon: <Activity />, title: 'Transaction status', body: 'Know what’s happening as your payment moves forward.', demo: 'live / status' },
-  { icon: <Users />, title: 'Saved recipients', body: 'Send to people you transact with regularly.', demo: 'people / remembered' },
-  { icon: <Bot />, title: 'AI assistance', body: 'Ask questions naturally instead of navigating a banking menu.', demo: 'ask / answer' },
+  { title: 'Recipient', body: 'See the name and account details before you continue.' },
+  { title: 'Amount', body: 'Review the exact naira amount in the conversation.' },
+  { title: 'Authorization', body: 'Sensitive actions wait for your explicit approval.' },
+  { title: 'Outcome', body: 'Get a clear status when the transaction completes.' },
 ];
 
 export function FeatureGrid() {
-  return <section id="features" className="section features"><div className="container"><Reveal className="feature-intro"><div className="section-heading"><SectionLabel>Product surface / 04</SectionLabel><h2>Less interface.<br />More intent.</h2></div><p>The useful parts of a financial assistant should feel close at hand, not hidden behind another login.</p></Reveal><div className="feature-grid">{featureData.map((feature, index) => <Reveal delay={index * .04} key={feature.title}><article className="feature-card"><div className="feature-demo"><span>{feature.demo}</span><div className="demo-bars"><i /><i /><i /><i /></div></div><div className="feature-icon">{feature.icon}</div><h3>{feature.title}</h3><p>{feature.body}</p></article></Reveal>)}</div></div></section>;
-}
-
-const magicPrompts = [
-  ['Send 10k to Tunde', 'I’ll find Tunde and show you the details before anything moves.'],
-  ["What’s my balance?", 'Here’s your current balance, with the latest update from your account.'],
-  ['Did that transfer go through?', 'I’ll check the status and tell you exactly where it is.'],
-  ['Send money to the account I used yesterday', 'I found the recent recipient. Review the details, then confirm when you’re ready.'],
-];
-
-export function MagicSection() {
-  const [active, setActive] = useState(0);
-  const reduceMotion = useReducedMotion();
-  useEffect(() => { if (reduceMotion) return; const timer = window.setInterval(() => setActive((current) => (current + 1) % magicPrompts.length), 3000); return () => window.clearInterval(timer); }, [reduceMotion]);
-  return <section className="section magic-section"><div className="container magic-layout"><Reveal className="magic-copy"><SectionLabel>The magic / 05</SectionLabel><div className="section-heading"><h2>Talk to your money.</h2><p>Say what you mean. GramPay turns a natural message into the next clear, reviewable step.</p></div><div className="hero-note"><span className="signal-dot" />No menus hiding behind the message</div></Reveal><Reveal delay={.1}><div className="magic-stack"><div className="magic-orbit" /><AnimatePresence mode="wait"><motion.div key={`u-${active}`} className="magic-message user" initial={reduceMotion ? false : { opacity: 0, y: 12, rotate: 3 }} animate={{ opacity: 1, y: 0, rotate: 3 }} exit={reduceMotion ? undefined : { opacity: 0, y: -12 }} transition={{ duration: reduceMotion ? 0 : .35 }}><small>you / message</small><strong>{magicPrompts[active][0]}</strong></motion.div><motion.div key={`a-${active}`} className="magic-message assistant" initial={reduceMotion ? false : { opacity: 0, y: 12, rotate: -3 }} animate={{ opacity: 1, y: 0, rotate: -3 }} exit={reduceMotion ? undefined : { opacity: 0, y: -12 }} transition={{ duration: reduceMotion ? 0 : .35 }}><small>GramPay / understands</small><strong>Got it.</strong><p>{magicPrompts[active][1]}</p></motion.div></AnimatePresence></div></Reveal></div></section>;
+  return <section id="features" className="section features"><div className="container feature-layout"><Reveal className="feature-intro"><SectionLabel>What stays visible / 04</SectionLabel><div className="section-heading"><h2>Important details.<br />In the open.</h2></div><p>A money movement should never be a mystery. Review the details, authorize the action, and see the outcome in one conversation.</p></Reveal><div className="feature-list">{featureData.map((feature, index) => <Reveal delay={index * .05} key={feature.title}><article className="feature-row"><span className="feature-index">0{index + 1}</span><h3>{feature.title}</h3><p>{feature.body}</p></article></Reveal>)}</div></div></section>;
 }
 
 const securityLayers = [
@@ -168,7 +144,7 @@ const securityLayers = [
 ];
 
 export function SecuritySection() {
-  return <section id="security" className="section"><div className="container security-layout"><Reveal><SectionLabel>Trust, made visible / 06</SectionLabel><div className="section-heading"><h2>Simple on the surface. Serious underneath.</h2><p>GramPay is designed so every important action has a visible step: identify, review, authorize, process, confirm.</p></div></Reveal><Reveal delay={.1}><div className="security-rail">{securityLayers.map(([number, title, body]) => <div className="security-layer" key={number}><div className="layer-num">{number}</div><div><strong>{title}</strong><span>{body}</span></div><span className="layer-state">tracked</span></div>)}</div></Reveal></div></section>;
+  return <section id="security" className="section"><div className="container security-layout"><Reveal><SectionLabel>Trust, made visible / 05</SectionLabel><div className="section-heading"><h2>Simple on the surface. Serious underneath.</h2><p>GramPay is designed so every important action has a visible step: identify, review, authorize, process, confirm.</p></div></Reveal><Reveal delay={.1}><div className="security-rail">{securityLayers.map(([number, title, body]) => <div className="security-layer" key={number}><div className="layer-num">{number}</div><div><strong>{title}</strong><span>{body}</span></div><span className="layer-state">tracked</span></div>)}</div></Reveal></div></section>;
 }
 
 const transactionStates = [
@@ -183,15 +159,8 @@ export function TransactionFlow() {
   const [active, setActive] = useState(0);
   const reduceMotion = useReducedMotion();
   useEffect(() => { if (reduceMotion) { setActive(transactionStates.length - 1); return; } const timer = window.setInterval(() => setActive((current) => (current + 1) % transactionStates.length), 1700); return () => window.clearInterval(timer); }, [reduceMotion]);
-  return <section className="section transaction-section"><div className="container"><Reveal className="transaction-head"><div className="section-heading"><SectionLabel>Backend, made tangible / 07</SectionLabel><h2>From message<br />to done.</h2></div><p>One simple request can still have a serious, observable path underneath it.</p></Reveal><div className="transaction-flow">{transactionStates.map(([label, title, body], index) => <article className={`transaction-card ${index === active ? 'active' : ''} ${index < active ? 'done' : ''}`} key={label}><span className="status-label">{label}</span><h3>{title}</h3><p>{body}</p>{index === 0 && <span className="transaction-amount">₦50,000 / JOHN</span>}{index === 4 && <span className="transaction-amount"><Check size={12} /> Complete</span>}</article>)}</div></div></section>;
+  return <section className="section transaction-section"><div className="container"><Reveal className="transaction-head"><div className="section-heading"><SectionLabel>Transaction record / 06</SectionLabel><h2>From message<br />to done.</h2></div><p>One simple request can still have a serious, observable path underneath it.</p></Reveal><div className="transaction-flow">{transactionStates.map(([label, title, body], index) => <article className={`transaction-card ${index === active ? 'active' : ''} ${index < active ? 'done' : ''}`} key={label}><span className="status-label">{label}</span><h3>{title}</h3><p>{body}</p>{index === 0 && <span className="transaction-amount">₦50,000 / JOHN</span>}{index === 4 && <span className="transaction-amount"><Check size={12} /> Complete</span>}</article>)}</div></div></section>;
 }
-
-export function WhyWhatsApp() {
-  const benefits = [['No app download', 'Start in the place you already open every day.', <DownloadIcon key="download" />], ['No new interface', 'The conversation is the interface.', <MessageCircle key="message" />], ['No complicated navigation', 'Say what you need instead of hunting for a menu.', <Gauge key="gauge" />], ['No learning curve', 'Familiar enough to feel immediate.', <Zap key="zap" />]];
-  return <section className="section why"><div className="container why-layout"><Reveal><SectionLabel>Why WhatsApp / 08</SectionLabel><div className="section-heading"><h2>You already know how to use WhatsApp.</h2><p>The point is not that WhatsApp is cool. The point is that the interface is already familiar.</p></div></Reveal><div className="benefits">{benefits.map(([title, body, icon], index) => <Reveal delay={index * .05} key={title as string}><article className="benefit"><div className="benefit-icon">{icon}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div></div></section>;
-}
-
-function DownloadIcon() { return <ArrowDownRight size={18} />; }
 
 const faqs = [
   ['What is this?', 'GramPay is an AI-powered financial assistant designed to help you manage supported payment and account tasks through a WhatsApp conversation.'],
@@ -206,13 +175,13 @@ const faqs = [
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   const reduceMotion = useReducedMotion();
-  return <section id="faq" className="section"><div className="container faq-layout"><Reveal><SectionLabel>Answers / 09</SectionLabel><div className="section-heading"><h2>Good questions deserve clear answers.</h2><p>We keep the language direct and the claims careful. Product-specific controls should be verified before launch.</p></div></Reveal><Reveal delay={.1}><div className="faq-list">{faqs.map(([question, answer], index) => <div className="faq-item" key={question}><button className="faq-question" aria-expanded={open === index} aria-controls={`faq-answer-${index}`} onClick={() => setOpen(open === index ? null : index)}><span>{question}</span><ChevronDown size={18} /></button><AnimatePresence initial={false}>{open === index && <motion.div id={`faq-answer-${index}`} className="faq-answer" initial={reduceMotion ? false : { height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={reduceMotion ? undefined : { height: 0, opacity: 0 }} transition={{ duration: reduceMotion ? 0 : .25 }}><p>{answer}</p></motion.div>}</AnimatePresence></div>)}</div></Reveal></div></section>;
+  return <section id="faq" className="section"><div className="container faq-layout"><Reveal><SectionLabel>Answers / 07</SectionLabel><div className="section-heading"><h2>Good questions deserve clear answers.</h2><p>We keep the language direct and the claims careful. Product-specific controls should be verified before launch.</p></div></Reveal><Reveal delay={.1}><div className="faq-list">{faqs.map(([question, answer], index) => <div className="faq-item" key={question}><button className="faq-question" aria-expanded={open === index} aria-controls={`faq-answer-${index}`} onClick={() => setOpen(open === index ? null : index)}><span>{question}</span><ChevronDown size={18} /></button><AnimatePresence initial={false}>{open === index && <motion.div id={`faq-answer-${index}`} className="faq-answer" initial={reduceMotion ? false : { height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={reduceMotion ? undefined : { height: 0, opacity: 0 }} transition={{ duration: reduceMotion ? 0 : .25 }}><p>{answer}</p></motion.div>}</AnimatePresence></div>)}</div></Reveal></div></section>;
 }
 
 export function FinalCTA() {
-  return <section className="final-cta"><div className="container"><div className="final-box"><div className="final-bubbles"><span className="final-bubble">What&apos;s my balance?</span><span className="final-bubble">Send ₦10k to Tunde</span><span className="final-bubble">Done ✓</span></div><SectionLabel>Start with a message / 10</SectionLabel><h2>Your next transaction can start with a message.</h2><p>Open WhatsApp. Say what you need.</p><a className="button-primary" href={waLink} target="_blank" rel="noreferrer">Try it on WhatsApp <Send size={15} /></a></div></div></section>;
+  return <section className="final-cta"><div className="container"><div className="final-box"><SectionLabel>Start a conversation</SectionLabel><h2>Your next transfer starts with a message.</h2><a className="button-primary" href={waLink} target="_blank" rel="noreferrer">Open WhatsApp <Send size={15} /></a></div></div></section>;
 }
 
 export function Footer() {
-  return <footer className="footer"><div className="container"><div className="footer-row"><div className="footer-brand"><Logo /><p>A WhatsApp-native financial assistant for clear, natural money movement.</p></div><div className="footer-links"><a href="#features">Product</a><a href="#security">Security</a><a href="#faq">FAQ</a><a href="#">Privacy</a><a href="#">Terms</a><a href={waLink} target="_blank" rel="noreferrer">Contact</a></div></div><div className="footer-bottom"><span>© 2026 GramPay. WhatsApp-first money movement.</span><span>Built for clarity, not complexity.</span></div></div></footer>;
+  return <footer className="footer"><div className="container"><div className="footer-row"><div className="footer-brand"><Logo /><p>Money movement, through a conversation.</p></div><div className="footer-links"><a href="#features">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a href="/mcp-landing.html">Developers</a><a href={waLink} target="_blank" rel="noreferrer">Contact</a></div></div><div className="footer-bottom"><span>© 2026 GramPay</span><span>Personal · WhatsApp</span></div></div></footer>;
 }

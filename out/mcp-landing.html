@@ -146,11 +146,16 @@
   }
   .header-in {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 15px 0;
+    padding: 15px var(--gutter);
+    gap: 14px;
   }
   .brand { display: flex; align-items: center; gap: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.03em; }
   .brand-glyph { width: 22px; height: 22px; flex: none; }
   .brand .g { color: var(--naira); }
+  .experience-switch { display: inline-flex; flex: none; gap: 2px; padding: 3px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-raised); }
+  .experience-switch a { padding: 6px 9px; border-radius: 3px; color: var(--text-soft); font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; }
+  .experience-switch a[aria-current="page"] { color: #F4FBF6; background: var(--naira); }
+  .experience-switch a:hover:not([aria-current="page"]) { color: var(--text); background: rgba(11,122,65,.08); }
   .live-chip {
     display: inline-flex; align-items: center; gap: 6px;
     font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; font-weight: 500;
@@ -164,7 +169,9 @@
   nav.links a { color: var(--text-soft); font-size: 0.9rem; font-weight: 500; }
   nav.links a:hover { color: var(--naira); }
   .nav-hide { }
-  @media (max-width: 620px) { .nav-hide { display: none; } }
+  .source-link { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem !important; letter-spacing: 0.04em; text-transform: uppercase; }
+  @media (max-width: 860px) { .header-in { gap: 9px; } nav.links { gap: 12px; } .experience-switch a { padding-inline: 7px; } }
+  @media (max-width: 620px) { .nav-hide, .source-link { display: none; } .header-in { gap: 7px; } .brand { gap: 7px; font-size: 1rem; } .brand-glyph { width: 20px; height: 20px; } .experience-switch a { padding: 7px 6px; font-size: 0.55rem; } nav.links { gap: 0; } nav.links a { font-size: 0.8rem; } }
 
   /* ---------- Hero ---------- */
   /* Vertical padding lives on .hero.strip (see Sections) so .strip keeps the gutter. */
@@ -440,16 +447,6 @@
 </style>
 </head>
 <body>
-<style>
-  .gram-bridge { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 10px 5vw; border-bottom: 1px solid rgba(22,40,31,.12); background: rgba(247,248,243,.94); backdrop-filter: blur(12px); font: 500 .7rem/1.2 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
-  .gram-bridge a { color: #16281f; text-decoration: none; }
-  .gram-bridge a:last-child { color: #0b7a41; }
-  .gram-bridge span { color: #748078; }
-  @media (max-width: 620px) { .gram-bridge span { display: none; } .gram-bridge { padding-inline: 18px; font-size: .6rem; } }
-</style>
-<div class="gram-bridge"><a href="/">← GramPay</a><span>Developer infrastructure / MCP</span><a href="https://github.com/TopeGramms/grampay-mcp-server" target="_blank" rel="noreferrer">View source ↗</a></div>
-
-
 <div class="receipt">
   <div class="tear tear-top"></div>
 
@@ -459,11 +456,16 @@
         <svg class="brand-glyph" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0E1C16"/><path d="M9 6h14v20l-2.3-1.6L18.3 26l-2.3-1.6L13.7 26l-2.4-1.6L9 26z" fill="#F4EFDF"/><path d="M12.5 11.5h7M12.5 15h7M12.5 18.5h4.2" stroke="#18C46C" stroke-width="1.6" stroke-linecap="round"/></svg>
         <span><span class="g">Gram</span>Pay</span>
       </div>
+      <div class="experience-switch" role="group" aria-label="Choose GramPay experience">
+        <a href="/" aria-label="Personal experience through WhatsApp">Personal</a>
+        <a href="/mcp-landing.html" aria-current="page">Developers</a>
+      </div>
       <nav class="links">
         <a class="nav-hide" href="#flow">Flow</a>
         <a class="nav-hide" href="#connect">Connect</a>
         <a class="nav-hide" href="#security">Security</a>
         <a href="#contact">Contact</a>
+        <a class="source-link" href="https://github.com/TopeGramms/grampay-mcp-server" target="_blank" rel="noreferrer">Source ↗</a>
       </nav>
     </div>
   </header>
