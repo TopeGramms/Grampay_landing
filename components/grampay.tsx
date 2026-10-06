@@ -1,5 +1,3 @@
-'use client';
-
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   Activity,
@@ -22,11 +20,10 @@ import {
   ShieldCheck,
   Sparkles,
   Users,
-  WalletCards,
   X,
   Zap,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 const waLink = 'https://wa.me/2349135428476';
 
@@ -99,8 +96,8 @@ export function Navbar() {
   return (
     <header className={`nav-shell ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <nav className="navbar" aria-label="Primary navigation"><a href="#top" onClick={close}><Logo /></a><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
-        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
+        <nav className="navbar" aria-label="Primary navigation"><a href="#top" onClick={close}><Logo /></a><div className="mode-switch" aria-label="Choose GramPay experience"><button className="active" aria-pressed="true">Personal</button><a href="/mcp-landing.html" aria-label="Open Developers MCP landing page">Developers</a></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
+        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch"><button className="active" onClick={close}>Personal</button><a href="/mcp-landing.html" onClick={close}>Developers</a></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
       </div>
     </header>
   );
@@ -117,7 +114,7 @@ export function TrustBar() {
 
 export function ProblemSection() {
   const steps = ['Open banking app', 'Find recipient', 'Copy account number', 'Switch apps', 'Confirm transfer', 'Wait / check status'];
-  return <section className="section"><div className="container problem-layout"><Reveal className="problem-copy"><SectionLabel>The old way / 02</SectionLabel><div className="section-heading"><h2>Why open another app?</h2><p>Your intent is simple. The workflow usually isn&apos;t. GramPay brings the transaction into the conversation that started it.</p></div></Reveal><Reveal delay={.1}><div className="workflow">{steps.map((step, index) => <><div className="workflow-item" key={step}><span className="mono">0{index + 1}</span><br />{step}</div>{index < steps.length - 1 && <div className="workflow-arrow" key={`${step}-arrow`}><ArrowRight size={14} /></div>}</>)}<div className="workflow-end"><span>Collapse the workflow</span><strong>Just send a message.</strong><ArrowRight size={22} color="var(--brand)" /></div></div></Reveal></div></section>;
+  return <section className="section"><div className="container problem-layout"><Reveal className="problem-copy"><SectionLabel>The old way / 02</SectionLabel><div className="section-heading"><h2>Why open another app?</h2><p>Your intent is simple. The workflow usually isn&apos;t. GramPay brings the transaction into the conversation that started it.</p></div></Reveal><Reveal delay={.1}><div className="workflow">{steps.map((step, index) => <Fragment key={step}><div className="workflow-item"><span className="mono">0{index + 1}</span><br />{step}</div>{index < steps.length - 1 && <div className="workflow-arrow"><ArrowRight size={14} /></div>}</Fragment>)}<div className="workflow-end"><span>Collapse the workflow</span><strong>Just send a message.</strong><ArrowRight size={22} color="var(--brand)" /></div></div></Reveal></div></section>;
 }
 
 const howSteps = [
@@ -202,7 +199,7 @@ const faqs = [
   ['Do I need another app?', 'No. The experience is designed to happen inside WhatsApp, so there is no separate interface to learn.'],
   ['How are transactions authorized?', 'Before a sensitive transaction completes, you review the details and provide explicit authorization, such as your PIN when prompted.'],
   ['What happens if a transaction fails?', 'You should receive a clear status so you know the transaction did not complete and what next step is available. Never repeat a payment unless the status is clear.'],
-  ['How do I get started?', 'Use the Try it on WhatsApp button to start a conversation. Replace the live WhatsApp link with the live product number before launch.'],
+  ['How do I get started?', 'Use the Try it on WhatsApp button to start a conversation with GramPay.'],
   ['Is my money stored by the assistant?', 'No. The assistant is an interface for supported financial actions; it is not described here as a wallet or a place where your money is stored.'],
 ];
 
