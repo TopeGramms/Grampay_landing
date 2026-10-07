@@ -1,36 +1,36 @@
 # GramPay Landing
 
-GramPay is a two-interface financial product experience:
+GramPay is one financial platform with two interfaces:
 
-- **Personal / WhatsApp:** a natural-language financial assistant for supported money movement through WhatsApp.
-- **Developer / MCP:** an MCP connector that gives AI agents a structured path for crypto-to-Naira cashouts and Nigerian bank settlement.
+- **Personal / WhatsApp:** the interface for people.
+- **Developers / MCP:** the interface for AI agents to request financial capabilities made available by GramPay.
+- **Shared platform:** both experiences use GramPay's financial infrastructure. Flutterwave currently provides payment infrastructure beneath the platform.
 
 ## Landing pages
 
 | Experience | Route | Description |
 | --- | --- | --- |
-| Personal | `/` | WhatsApp-native GramPay product story, animated conversation demo, security flow, FAQ, and WhatsApp CTA. |
-| Developers | [`/mcp-landing.html`](./public/mcp-landing.html) | The original GramPay MCP landing page, integrated locally with its connection flow, settlement receipt UI, safeguards, and provider information. |
+| Personal | `/` | GramPay's WhatsApp experience for people, with an animated conversation demo, product details, FAQ, and WhatsApp CTA. |
+| Developers | [`/mcp-landing.html`](./public/mcp-landing.html) | The MCP interface for AI agents, the shared GramPay platform, and its underlying payment infrastructure. |
 
 The **Developers** link in the Personal navigation opens the full MCP landing page directly.
 
 ## Source and integrations
 
 - Personal WhatsApp CTA: [`wa.me/2349135428476`](https://wa.me/2349135428476)
-- Original MCP implementation and landing source: [`TopeGramms/grampay-mcp-server`](https://github.com/TopeGramms/grampay-mcp-server)
 - MCP landing page source file: [`public/mcp-landing.html`](./public/mcp-landing.html)
-- MCP connector endpoint referenced by the original page: `https://grampay-mcp.up.railway.app/mcp`
+- This repository contains the landing experiences; the MCP service implementation is maintained separately.
 
 ## Tech stack
 
-- Next.js 14
+- Next.js 15
 - TypeScript
 - Tailwind CSS / PostCSS
 - Framer Motion
 - Lucide React
 - Static export to `out/`
 
-The Personal page is implemented with reusable React sections in [`components/grampay.tsx`](./components/grampay.tsx). The Developer page is intentionally kept as the original standalone HTML experience so it can retain its own layout, motion, copy, and MCP connection flow.
+The Personal page is implemented with reusable React sections in [`components/grampay.tsx`](./components/grampay.tsx). The Developers page is standalone HTML, preserving its own layout, motion, and receipt-inspired visual treatment.
 
 ## Local development
 
@@ -60,11 +60,14 @@ The static site is generated in `out/`, including both `index.html` and `mcp-lan
 ```text
 app/                  Next.js app shell and homepage
 components/           Personal GramPay React sections
-public/mcp-landing.html  Original integrated MCP landing page
+public/mcp-landing.html  Standalone Developers/MCP experience
 public/               Static assets and route manifest
 out/                  Generated static export
 ```
 
 ## Product positioning
 
-> One GramPay core. Two interfaces: WhatsApp for people and MCP for AI agents.
+- **Personal:** WhatsApp for people.
+- **Developers:** MCP for AI agents.
+- **Both:** GramPay financial infrastructure.
+- **Payment infrastructure:** Flutterwave is the current provider beneath GramPay.
