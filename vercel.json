@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/developers",
+      "destination": "/mcp-landing.html",
+      "statusCode": 302
+    },
+    {
+      "source": "/mcp",
+      "destination": "/mcp-landing.html",
+      "statusCode": 302
+    }
+  ]
+}
