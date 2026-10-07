@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GramPay — Crypto to Naira, from inside a conversation</title>
-<meta name="description" content="GramPay is an MCP connector that gives Claude or any MCP agent, a real tool for settling crypto to a Nigerian bank account. Live over Streamable HTTP, settled through IvoryPay, guarded by signed one-time tokens.">
+<title>GramPay — MCP for AI agents</title>
+<meta name="description" content="One GramPay financial platform with two interfaces: WhatsApp for people and MCP for AI agents.">
 <meta name="theme-color" content="#0E1C16">
 <meta name="color-scheme" content="light">
 
 <!-- Social / Open Graph — set NEXT to your real deployed domain -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GramPay">
-<meta property="og:title" content="GramPay — Crypto to Naira, from inside a conversation">
-<meta property="og:description" content="An MCP connector that lets your AI agent settle crypto to a Nigerian bank account. Live over Streamable HTTP, settled through IvoryPay, guarded by signed one-time tokens.">
-<meta property="og:url" content="https://grampay-mcp.up.railway.app/">
-<meta property="og:image" content="https://grampay-mcp.up.railway.app/og-image.svg">
+<meta property="og:title" content="GramPay — MCP for AI agents">
+<meta property="og:description" content="One financial platform. WhatsApp for people; MCP for AI agents.">
+<meta property="og:image" content="/og-image.svg">
 <meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GramPay — Crypto to Naira, from inside a conversation">
-<meta name="twitter:description" content="An MCP connector that lets your AI agent settle crypto to a Nigerian bank account. Signed one-time tokens, hard limits, real banks.">
-<meta name="twitter:image" content="https://grampay-mcp.up.railway.app/og-image.svg">
+<meta name="twitter:title" content="GramPay — MCP for AI agents">
+<meta name="twitter:description" content="One financial platform. WhatsApp for people; MCP for AI agents.">
+<meta name="twitter:image" content="/og-image.svg">
 <meta name="twitter:site" content="@TopeGramms">
 
 <link rel="icon" type="image/png" href="/iconcraft-1788533688048.png">
@@ -46,7 +45,7 @@
     --on-ink:       #EDE7D6;
     --on-ink-soft:  #93A79A;
 
-    /* Emerald — the one signature accent (money · Naira · settled) */
+    /* Emerald — GramPay's signature accent */
     --naira:        #0B7A41;
     --naira-deep:   #0A5E33;
     --naira-bright: #18C46C;
@@ -146,11 +145,16 @@
   }
   .header-in {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 15px 0;
+    padding: 15px var(--gutter);
+    gap: 14px;
   }
   .brand { display: flex; align-items: center; gap: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.03em; }
   .brand-glyph { width: 22px; height: 22px; flex: none; }
   .brand .g { color: var(--naira); }
+  .experience-switch { display: inline-flex; flex: none; gap: 2px; padding: 3px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-raised); }
+  .experience-switch a { padding: 6px 9px; border-radius: 3px; color: var(--text-soft); font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; }
+  .experience-switch a[aria-current="page"] { color: #F4FBF6; background: var(--naira); }
+  .experience-switch a:hover:not([aria-current="page"]) { color: var(--text); background: rgba(11,122,65,.08); }
   .live-chip {
     display: inline-flex; align-items: center; gap: 6px;
     font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; font-weight: 500;
@@ -164,7 +168,9 @@
   nav.links a { color: var(--text-soft); font-size: 0.9rem; font-weight: 500; }
   nav.links a:hover { color: var(--naira); }
   .nav-hide { }
-  @media (max-width: 620px) { .nav-hide { display: none; } }
+  .source-link { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem !important; letter-spacing: 0.04em; text-transform: uppercase; }
+  @media (max-width: 860px) { .header-in { gap: 9px; } nav.links { gap: 12px; } .experience-switch a { padding-inline: 7px; } }
+  @media (max-width: 620px) { .nav-hide, .source-link { display: none; } .header-in { gap: 7px; } .brand { gap: 7px; font-size: 1rem; } .brand-glyph { width: 20px; height: 20px; } .experience-switch a { padding: 7px 6px; font-size: 0.55rem; } nav.links { gap: 0; } nav.links a { font-size: 0.8rem; } }
 
   /* ---------- Hero ---------- */
   /* Vertical padding lives on .hero.strip (see Sections) so .strip keeps the gutter. */
@@ -179,7 +185,7 @@
   .eyebrow b { color: var(--naira-deep); font-weight: 600; }
 
   h1 { font-size: clamp(2.35rem, 6.2vw, 3.9rem); font-weight: 800; letter-spacing: -0.035em; max-width: 15ch; }
-  h1 .turn { color: var(--naira); position: relative; white-space: nowrap; }
+  h1 .turn { color: var(--naira); position: relative; white-space: normal; }
   h1 .arrow { display: inline-block; color: var(--naira-bright); }
 
   .lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--text-soft); max-width: 42ch; margin: 24px 0 32px; }
@@ -229,13 +235,14 @@
     font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-ink-soft);
   }
   .term-head .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--naira-bright); display: inline-block; margin-right: 7px; vertical-align: middle; box-shadow: 0 0 8px var(--naira-glow); }
-  .term-body { padding: 16px 18px 20px; position: relative; }
+  .term-body { padding: 16px 18px 20px; position: relative; min-height: 260px; }
 
   .rcpt-line {
     display: flex; justify-content: space-between; gap: 14px; align-items: baseline;
     padding: 5px 0; font-size: 0.82rem;
     opacity: 0; transform: translateY(-6px);
   }
+  .rcpt-line.rcpt-tail { padding-right: 122px; }
   .rcpt-line.printed { opacity: 1; transform: none; transition: opacity 0.28s var(--ease), transform 0.28s var(--ease); }
   .rcpt-key { color: var(--on-ink-soft); }
   .rcpt-val { color: var(--on-ink); text-align: right; }
@@ -308,7 +315,7 @@
     box-shadow: 0 30px 70px -44px rgba(14,28,22,0.8);
   }
   .flow-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-ink-soft); margin-bottom: 22px; }
-  .pipe { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+  .pipe { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
   @media (max-width: 680px) { .pipe { grid-template-columns: 1fr; gap: 14px; } }
   .node { position: relative; padding: 0 14px; }
   .node-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--ink-raised); border: 2px solid var(--ink-line); position: relative; z-index: 2; transition: all 0.4s var(--ease); }
@@ -440,16 +447,6 @@
 </style>
 </head>
 <body>
-<style>
-  .gram-bridge { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 10px 5vw; border-bottom: 1px solid rgba(22,40,31,.12); background: rgba(247,248,243,.94); backdrop-filter: blur(12px); font: 500 .7rem/1.2 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
-  .gram-bridge a { color: #16281f; text-decoration: none; }
-  .gram-bridge a:last-child { color: #0b7a41; }
-  .gram-bridge span { color: #748078; }
-  @media (max-width: 620px) { .gram-bridge span { display: none; } .gram-bridge { padding-inline: 18px; font-size: .6rem; } }
-</style>
-<div class="gram-bridge"><a href="/">← GramPay</a><span>Developer infrastructure / MCP</span><a href="https://github.com/TopeGramms/grampay-mcp-server" target="_blank" rel="noreferrer">View source ↗</a></div>
-
-
 <div class="receipt">
   <div class="tear tear-top"></div>
 
@@ -459,10 +456,14 @@
         <svg class="brand-glyph" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0E1C16"/><path d="M9 6h14v20l-2.3-1.6L18.3 26l-2.3-1.6L13.7 26l-2.4-1.6L9 26z" fill="#F4EFDF"/><path d="M12.5 11.5h7M12.5 15h7M12.5 18.5h4.2" stroke="#18C46C" stroke-width="1.6" stroke-linecap="round"/></svg>
         <span><span class="g">Gram</span>Pay</span>
       </div>
+      <div class="experience-switch" role="group" aria-label="Choose GramPay experience">
+        <a href="/" aria-label="Personal experience through WhatsApp">Personal</a>
+        <a href="/mcp-landing.html" aria-current="page">Developers</a>
+      </div>
       <nav class="links">
-        <a class="nav-hide" href="#flow">Flow</a>
-        <a class="nav-hide" href="#connect">Connect</a>
-        <a class="nav-hide" href="#security">Security</a>
+        <a class="nav-hide" href="#flow">Architecture</a>
+        <a class="nav-hide" href="#connect">Developers</a>
+        <a class="nav-hide" href="#infrastructure">Infrastructure</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -473,47 +474,42 @@
     <section class="hero strip">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow reveal"><span>MCP Connector · Crypto <b>→</b> Naira</span><span class="live-chip"><span class="live-dot"></span>Live</span></div>
-          <h1 class="reveal">Tell your AI to cash&nbsp;out. <span class="turn">It settles<span class="arrow"> ↳</span></span> to a Nigerian bank account.</h1>
+          <div class="eyebrow reveal"><span>Developers <b>·</b> AI agents</span><span class="live-chip"><span class="live-dot"></span>MCP interface</span></div>
+          <h1 class="reveal">Give your AI a way to <span class="turn">interact with money.</span></h1>
           <p class="lede reveal">
-            GramPay is an <b>MCP connector</b> that gives Claude — or any MCP-capable agent —
-            a real tool for turning crypto into Naira. Live over Streamable HTTP,
-            settled through <b>IvoryPay</b>, guarded by signed one-time tokens and hard limits.
+            GramPay is one financial platform with two interfaces: WhatsApp for people and
+            <b>MCP for AI agents</b>. Through MCP, agents can request the financial capabilities
+            GramPay makes available.
           </p>
           <div class="cta-row reveal">
-            <button class="btn btn-primary" id="connect-cta" type="button">
-              <span class="default-label">Connect in Claude →</span>
-              <span class="copied-label">URL copied — paste in Claude ✓</span>
-            </button>
-            <a class="btn btn-ghost" href="#contact">Request access</a>
+            <a class="btn btn-primary" href="#flow">See how it fits →</a>
+            <a class="btn btn-ghost" href="#contact">Talk to GramPay</a>
           </div>
           <div class="trust-inline reveal">
-            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg> Signed one-time tokens</span>
-            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12h16M12 4v16"/></svg> $1,000 cashout cap</span>
-            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg> Real banks only</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg> One financial platform</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12h16M12 4v16"/></svg> WhatsApp for people</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg> MCP for AI agents</span>
           </div>
         </div>
 
-        <!-- Signature: the settlement receipt that prints itself -->
+        <!-- Signature: the architecture receipt that prints itself -->
         <div class="reveal">
-          <div class="term" id="receipt" role="img" aria-label="Example settlement receipt: 100 US dollars in USDC converts to 165,000 Naira, prepared with a signed one-time token and settled to a Nigerian bank account through IvoryPay.">
+          <div class="term" id="receipt" role="img" aria-label="Illustrative architecture receipt showing an AI agent, the GramPay MCP interface, the GramPay platform, and a supported financial action.">
             <div class="term-head">
-              <span><span class="dot"></span>settlement receipt</span>
-              <span>ivorypay</span>
+              <span><span class="dot"></span>architecture receipt</span>
+              <span>grampay</span>
             </div>
             <div class="term-body" id="receipt-body" aria-hidden="true">
               <div class="print-head" id="print-head"></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">tool</span><span class="rcpt-val"><span class="em">cashout_to_ngn</span></span></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">quote</span><span class="rcpt-val">1 USDC = <span class="em">₦1,650</span></span></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">amount</span><span class="rcpt-val">$100.00 USDC</span></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">converted</span><span class="rcpt-val em" id="rcpt-amount">₦0.00</span></div>
+              <div class="rcpt-line" data-line><span class="rcpt-key">source</span><span class="rcpt-val"><span class="em">AI agent</span></span></div>
+              <div class="rcpt-line" data-line><span class="rcpt-key">interface</span><span class="rcpt-val">MCP</span></div>
+              <div class="rcpt-line" data-line><span class="rcpt-key">platform</span><span class="rcpt-val em">GramPay</span></div>
+              <div class="rcpt-line" data-line><span class="rcpt-key">request</span><span class="rcpt-val">Supported financial action</span></div>
               <hr class="rcpt-sep" data-line>
-              <div class="rcpt-line" data-line><span class="rcpt-key">recipient</span><span class="rcpt-val">•••• 4821 · Access</span></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">prepare</span><span class="rcpt-val"><span class="vio">jwt</span> signed · exp 5m</span></div>
-              <div class="rcpt-line" data-line><span class="rcpt-key">reference</span><span class="rcpt-val" id="rcpt-ref">1785······</span></div>
+              <div class="rcpt-line rcpt-tail" data-line><span class="rcpt-key">rail</span><span class="rcpt-val">Payment</span></div>
               <hr class="rcpt-sep" data-line>
-              <div class="rcpt-line" data-line><span class="rcpt-key">status</span><span class="rcpt-val" id="rcpt-status">processing<span id="rcpt-cursor" style="color:var(--naira-bright)">_</span></span></div>
-              <div class="stamp" id="stamp">SETTLED<small>ngn ✓</small></div>
+              <div class="rcpt-line rcpt-tail" data-line><span class="rcpt-key">view</span><span class="rcpt-val" id="rcpt-status">illustrative</span></div>
+              <div class="stamp" id="stamp">ONE CORE<small>MCP · GRAMPAY</small></div>
             </div>
             <div class="term-tear"></div>
           </div>
@@ -526,147 +522,69 @@
       <span class="ticker-track" id="ticker-track"></span>
     </div>
 
-    <!-- 01 WHAT IT DOES -->
+    <!-- 01 THE PLATFORM -->
     <section class="strip" id="what">
-      <div class="sec-head reveal"><span class="sec-ref">01</span><h2>What it actually does</h2></div>
+      <div class="sec-head reveal"><span class="sec-ref">01</span><h2>One platform, two interfaces</h2></div>
       <p class="sec-lede reveal">
-        Off-ramping crypto to Naira usually means leaving the conversation, opening an exchange,
-        and walking a withdrawal form by hand. GramPay collapses that into a tool call your agent
-        makes directly — the connector pattern used to let AI move money, aimed at one job:
-        getting crypto into a Nigerian bank account.
+        GramPay is a financial platform built to meet people and AI agents through the interface
+        that fits them. WhatsApp is for people; MCP is for AI agents. Both sit on the same
+        GramPay financial infrastructure.
       </p>
       <div class="items">
-        <div class="item reveal"><span class="item-n">01</span><div><h3>Quote &amp; balance</h3><p>The agent reads your USDC balance and a live USDC → Naira rate before proposing an amount.</p></div></div>
-        <div class="item reveal"><span class="item-n">02</span><div><h3>Prepare, then execute</h3><p>A prepare step validates limits and issues a signed one-time token; execution redeems it. Nothing moves without both halves.</p></div></div>
-        <div class="item reveal"><span class="item-n">03</span><div><h3>Settle to a bank account</h3><p>Naira lands in a named Nigerian bank account through IvoryPay — and the agent can track the reference until it clears.</p></div></div>
+        <div class="item reveal"><span class="item-n">01</span><div><h3>Personal · WhatsApp</h3><p>A conversational interface for people using GramPay.</p></div></div>
+        <div class="item reveal"><span class="item-n">02</span><div><h3>Developers · MCP</h3><p>A structured interface for AI agents to request financial capabilities made available by GramPay.</p></div></div>
+        <div class="item reveal"><span class="item-n">03</span><div><h3>Shared financial platform</h3><p>The same GramPay financial infrastructure sits beneath both experiences.</p></div></div>
       </div>
     </section>
 
     <!-- THE FLOW -->
     <section class="strip" id="flow">
-      <div class="sec-head reveal"><span class="sec-ref">→</span><h2>One conversation, four moves</h2></div>
-      <p class="sec-lede reveal">The full cash-out runs as a short, inspectable sequence. The prepare/execute split is the safety seam — a signed token has to change hands before any Naira does.</p>
+      <div class="sec-head reveal"><span class="sec-ref">→</span><h2>From agent request to financial action</h2></div>
+      <p class="sec-lede reveal">MCP is the agent-facing interface into GramPay. GramPay coordinates a supported financial action, with payment rails beneath the platform.</p>
       <div class="flow reveal" id="pipe-wrap">
-        <div class="flow-eyebrow">grampay · cashout pipeline</div>
+        <div class="flow-eyebrow">ai agent → grampay mcp → grampay → financial action → payment rails</div>
         <div class="pipe" id="pipe">
-          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">grampay_get_quote</div><h4>Quote</h4><p>Live USDC → NGN rate for the amount, plus a balance check.</p></div>
-          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">grampay_prepare_cashout</div><h4>Prepare</h4><p>Validates limits, returns a signed one-time token.</p><span class="tag-safe">safety seam</span></div>
-          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">grampay_execute_cashout</div><h4>Execute</h4><p>Redeems the token and sends Naira to the bank account.</p></div>
-          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">check_transfer_status</div><h4>Settle</h4><p>Track the reference until IvoryPay clears it.</p></div>
+          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">AI AGENT</div><h4>Agent</h4><p>Makes a financial request.</p></div>
+          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">GRAMPAY MCP</div><h4>MCP interface</h4><p>Provides a structured way into GramPay.</p></div>
+          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">GRAMPAY</div><h4>Platform</h4><p>Coordinates the supported request.</p></div>
+          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">FINANCIAL ACTION</div><h4>Action</h4><p>Uses a capability made available by GramPay.</p></div>
+          <div class="node"><div class="node-dot"></div><div class="node-rail"></div><div class="node-k">PAYMENT RAILS</div><h4>Infrastructure</h4><p>Runs beneath the GramPay platform.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- 02 CONNECT -->
+    <!-- 02 DEVELOPERS -->
     <section class="strip" id="connect">
-      <div class="sec-head reveal"><span class="sec-ref">02</span><h2>Connect it in Claude</h2></div>
-      <p class="sec-lede reveal">GramPay runs as a remote MCP server over Streamable HTTP. Add it as a custom connector once, and cashing out becomes something you can just ask for.</p>
+      <div class="sec-head reveal"><span class="sec-ref">02</span><h2>MCP is the agent interface</h2></div>
+      <p class="sec-lede reveal">MCP gives AI agents a structured interface to the financial capabilities GramPay makes available. GramPay remains the platform between the agent and its underlying payment infrastructure.</p>
 
       <div class="code reveal" id="code-block">
-        <button class="code-copy" id="code-copy" type="button">copy</button><span class="muted"># Claude → Settings → Connectors → Add custom connector</span><br>
-<span class="k">Name</span>  <span class="v">GramPay</span><br>
-<span class="k">URL</span>   <span class="v" id="code-url">https://grampay-mcp.up.railway.app/mcp?token=YOUR_MCP_AUTH_TOKEN</span><br>
-<span class="k">OAuth</span> <span class="muted">leave blank — auth travels in the URL token or a Bearer header</span></div>
+        <span class="muted"># GramPay's product architecture</span><br>
+<span class="k">PEOPLE</span>       <span class="v">WhatsApp → GramPay</span><br>
+<span class="k">AI AGENTS</span>   <span class="v">MCP → GramPay</span><br>
+<span class="k">PLATFORM</span>    <span class="v">GramPay financial infrastructure</span></div>
 
       <div class="steps reveal">
-        <div class="step"><p>Open <b>Claude → Settings → Connectors</b> and choose <b>Add custom connector</b>.</p></div>
-        <div class="step"><p>Paste the URL above, with your <code>MCP_AUTH_TOKEN</code> in place of the placeholder.</p></div>
-        <div class="step"><p>Save. The tools load automatically — then just ask, in plain words.</p></div>
+        <div class="step"><p><b>People</b> use GramPay through WhatsApp.</p></div>
+        <div class="step"><p><b>AI agents</b> reach GramPay through MCP.</p></div>
+        <div class="step"><p><b>GramPay</b> connects both interfaces to its financial platform.</p></div>
       </div>
 
-      <div class="say-head reveal">Then just talk to it</div>
-      <div class="say">
-        <div class="say-row reveal">
-          <span class="say-mark" aria-hidden="true">&ldquo;</span>
-          <div>
-            <p class="say-line">How much naira is $100 of USDC worth right now?</p>
-            <p class="say-note">Reads your balance and a live rate. Nothing is committed.</p>
-          </div>
-        </div>
-        <div class="say-row reveal">
-          <span class="say-mark" aria-hidden="true">&ldquo;</span>
-          <div>
-            <p class="say-line">Cash out $50 to my Access Bank account, 0123456789.</p>
-            <p class="say-note">Prepares a <b>signed one-time token</b>, shows you the exact figures, then settles only when you say go.</p>
-          </div>
-        </div>
-        <div class="say-row reveal">
-          <span class="say-mark" aria-hidden="true">&ldquo;</span>
-          <div>
-            <p class="say-line">Did that transfer land yet?</p>
-            <p class="say-note">Tracks the reference until IvoryPay clears it.</p>
-          </div>
-        </div>
-      </div>
-      <p class="tools-more reveal">You never name a tool. GramPay hands your assistant 13 of them and it picks the right one for each ask — always confirming before any Naira moves.</p>
-    </section>
-
-    <!-- SECURITY -->
-    <section class="strip" id="security">
-      <div class="vault reveal">
-        <div class="vault-eyebrow">Safeguards</div>
-        <h2>Built to be careful with money</h2>
-        <div class="vault-grid">
-          <div class="guard">
-            <div class="guard-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-            <h4>Signed one-time tokens</h4>
-            <p><code>prepare</code> issues a JWT that expires in 5 minutes; <code>execute</code> must redeem it. Prepared transfers survive restarts and scale without a database.</p>
-          </div>
-          <div class="guard">
-            <div class="guard-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5M4 12h16"/></svg></div>
-            <h4>Hard cashout cap</h4>
-            <p>Every payout is bounded by <code>GRAMPAY_MAX_CASHOUT_USD</code> — $1,000 by default. Amounts over the cap are refused before anything is signed.</p>
-          </div>
-          <div class="guard">
-            <div class="guard-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></div>
-            <h4>Real banks only</h4>
-            <p>An anti-wallet filter keeps payouts pointed at licensed Nigerian bank accounts, never at arbitrary crypto addresses.</p>
-          </div>
-          <div class="guard">
-            <div class="guard-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="2.5"/></svg></div>
-            <h4>Two transports, one auth</h4>
-            <p>Streamable HTTP for remote connectors, stdio for local desktop. Both gated by a Bearer token you control.</p>
-          </div>
-        </div>
+      <div class="cta-row reveal">
+        <a class="btn btn-primary" href="mailto:grampayhq@gmail.com?subject=GramPay%20MCP%20developer%20access">Discuss developer access →</a>
       </div>
     </section>
 
-    <!-- 03 PROVIDER LEDGER -->
-    <section class="strip" id="providers">
-      <div class="sec-head reveal"><span class="sec-ref">03</span><h2>Provider ledger</h2></div>
-      <p class="sec-lede reveal">Three off-ramp providers were evaluated on fee and access. Access — not fee — decided what's live today. This table is kept honest on purpose.</p>
+    <!-- 03 PAYMENT INFRASTRUCTURE -->
+    <section class="strip" id="infrastructure">
+      <div class="sec-head reveal"><span class="sec-ref">03</span><h2>The infrastructure underneath</h2></div>
+      <p class="sec-lede reveal">GramPay is the financial platform. Flutterwave currently serves as its payment infrastructure provider — an underlying rail, not the product interface.</p>
       <table class="ltable reveal">
-        <thead><tr><th>Provider</th><th>Fee</th><th>Access</th><th>Status</th></tr></thead>
+        <thead><tr><th>Layer</th><th>Role</th><th>Provider</th></tr></thead>
         <tbody>
-          <tr><td class="prov">IvoryPay</td><td class="mono">1%</td><td>Personal KYC</td><td><span class="tag tag-live">Live</span></td></tr>
-          <tr><td class="prov">Breet</td><td class="mono">0.5%</td><td>Company KYB</td><td><span class="tag tag-wait">Post-incorp</span></td></tr>
-          <tr><td class="prov">Quidax Ramp</td><td class="mono">₦200 flat</td><td>Company KYB</td><td><span class="tag tag-wait">Post-incorp</span></td></tr>
+          <tr><td class="prov">Payment infrastructure</td><td>Provider beneath GramPay</td><td>Flutterwave</td></tr>
         </tbody>
       </table>
-    </section>
-
-    <!-- 04 ROADMAP -->
-    <section class="strip" id="roadmap">
-      <div class="sec-head reveal"><span class="sec-ref">04</span><h2>Roadmap</h2></div>
-      <div class="road">
-        <div class="stage now reveal"><span class="stage-tag">Now · shipped</span><h4>Live connector on IvoryPay</h4><p>Deployed over Streamable HTTP, addable in Claude, with signed-token safety and a hard cashout cap.</p></div>
-        <div class="stage reveal"><span class="stage-tag">Next</span><h4>Live-key volume, higher limits</h4><p>Graduate from test-key validation to real-money throughput and raise caps as trust builds.</p></div>
-        <div class="stage reveal"><span class="stage-tag">Then</span><h4>Incorporation</h4><p>Unlocks Breet and Quidax Ramp — lower fees at volume.</p></div>
-        <div class="stage reveal"><span class="stage-tag">Later</span><h4>Multi-user prepare / approve / execute</h4><p>A human approval step between an agent proposing a transfer and it executing, for teams.</p></div>
-      </div>
-    </section>
-
-    <!-- 05 BOUNDARIES -->
-    <section class="strip" id="boundaries" style="padding-bottom: 4px;">
-      <div class="sec-head reveal"><span class="sec-ref">05</span><h2>Where it stands, plainly</h2></div>
-      <div class="bounds reveal">
-        <h3>Operating boundaries, today</h3>
-        <ul>
-          <li><b>Single operator.</b> One fund owner today; the multi-user approval layer is on the roadmap, not shipped.</li>
-          <li><b>IvoryPay is the live rail.</b> Validated end-to-end; Breet and Quidax open after incorporation.</li>
-          <li><b>Hard $1,000 cap</b> per cashout while volume ramps — raised deliberately, not automatically.</li>
-        </ul>
-      </div>
     </section>
   </main>
 
@@ -677,7 +595,7 @@
           <svg class="brand-glyph" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#16281F"/><path d="M9 6h14v20l-2.3-1.6L18.3 26l-2.3-1.6L13.7 26l-2.4-1.6L9 26z" fill="#EDE7D6"/><path d="M12.5 11.5h7M12.5 15h7M12.5 18.5h4.2" stroke="#18C46C" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span><span class="g">Gram</span>Pay</span>
         </div>
-        <p>An MCP connector for crypto-to-Naira cash-outs. Built solo in Nigeria, in the Superteam Nigeria ecosystem.</p>
+        <p>One financial platform. WhatsApp for people; MCP for AI agents.</p>
       </div>
       <div class="foot-links" id="contact">
         <a href="https://wa.me/2349135428476">WhatsApp</a>
@@ -686,8 +604,8 @@
       </div>
     </div>
     <div class="strip foot-meta">
-      <span>GramPay · source available on request</span>
-      <span>MCP · Streamable HTTP · IvoryPay</span>
+      <span>Personal · WhatsApp · people</span>
+      <span>Developers · MCP · AI agents</span>
     </div>
   </footer>
 
@@ -698,24 +616,19 @@
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var NGN = 165000;
-
-  function fmtNGN(v) { return "₦" + Math.round(v).toLocaleString("en-NG") + ".00"; }
 
   /* ---- Rate ticker (built once, duplicated for seamless loop) ---- */
   (function () {
     var track = document.getElementById("ticker-track");
     if (!track) return;
     var bits = [
-      '<span class="em">1 USDC</span> = <span class="em">₦1,650</span>',
-      "Crypto → Naira, from a tool call",
-      '<span class="em">IvoryPay</span> settlement',
-      "signed one-time tokens",
-      "USDT → NGN", "BTC → NGN", "ETH → NGN",
-      "$1,000 cashout cap",
-      "grampay_execute_cashout",
-      "real Nigerian bank accounts",
-      "MCP · Streamable HTTP"
+      '<span class="em">One financial platform</span>',
+      '<span class="em">WhatsApp</span> for people',
+      '<span class="em">MCP</span> for AI agents',
+      "Personal → WhatsApp",
+      "Developers → MCP",
+      "GramPay financial infrastructure",
+      "Flutterwave · payment infrastructure today"
     ];
     var unit = bits.join('<span class="sep">·</span>') + '<span class="sep">·</span>';
     track.innerHTML = unit + unit;
@@ -763,102 +676,26 @@
     io.observe(pipe);
   })();
 
-  /* ---- Copy helpers ---- */
-  function copy(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    return new Promise(function (res, rej) {
-      try {
-        var t = document.createElement("textarea");
-        t.value = text; t.style.position = "fixed"; t.style.opacity = "0";
-        document.body.appendChild(t); t.select(); document.execCommand("copy");
-        document.body.removeChild(t); res();
-      } catch (e) { rej(e); }
-    });
-  }
-  function connectorURL() {
-    var el = document.getElementById("code-url");
-    return el ? el.textContent.trim() : "";
-  }
-
-  var cta = document.getElementById("connect-cta");
-  if (cta) {
-    cta.addEventListener("click", function () {
-      copy(connectorURL()).then(function () {
-        cta.classList.add("is-copied");
-        setTimeout(function () { cta.classList.remove("is-copied"); }, 2200);
-      }).catch(function () {});
-      var connect = document.getElementById("connect");
-      if (connect) connect.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    });
-  }
-  var codeCopy = document.getElementById("code-copy");
-  if (codeCopy) {
-    codeCopy.addEventListener("click", function () {
-      copy(connectorURL()).then(function () {
-        codeCopy.textContent = "copied ✓"; codeCopy.classList.add("is-copied");
-        setTimeout(function () { codeCopy.textContent = "copy"; codeCopy.classList.remove("is-copied"); }, 2000);
-      }).catch(function () {});
-    });
-  }
-
-  /* ---- Signature: the printing settlement receipt ---- */
+  /* ---- Signature: the printing architecture receipt ---- */
   (function () {
     var body = document.getElementById("receipt-body");
     if (!body) return;
     var lines = Array.prototype.slice.call(body.querySelectorAll("[data-line]"));
-    var amountEl = document.getElementById("rcpt-amount");
-    var refEl = document.getElementById("rcpt-ref");
-    var statusEl = document.getElementById("rcpt-status");
     var stamp = document.getElementById("stamp");
     var head = document.getElementById("print-head");
     var timers = [];
     function clearAll() { timers.forEach(clearTimeout); timers = []; }
     function after(ms, fn) { timers.push(setTimeout(fn, ms)); }
 
-    function finalRef() {
-      return "1785" + Math.floor(100000 + Math.random() * 899999);
-    }
-
     if (reduce) {
       lines.forEach(function (l) { l.classList.add("printed"); });
-      amountEl.textContent = fmtNGN(NGN);
-      refEl.textContent = finalRef();
-      statusEl.innerHTML = "settled";
       stamp.style.opacity = "1"; stamp.style.transform = "rotate(-11deg) scale(1)";
       return;
-    }
-
-    function count(to, dur) {
-      var start = null;
-      function frame(ts) {
-        if (start === null) start = ts;
-        var p = Math.min((ts - start) / dur, 1);
-        var e = 1 - Math.pow(1 - p, 3);
-        amountEl.textContent = fmtNGN(to * e);
-        if (p < 1) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function scrambleRef(finalVal, dur) {
-      var startT = Date.now();
-      function tickR() {
-        var elapsed = Date.now() - startT;
-        if (elapsed >= dur) { refEl.textContent = finalVal; return; }
-        var s = "1785";
-        for (var i = 0; i < 6; i++) s += Math.floor(Math.random() * 10);
-        refEl.textContent = s;
-        after(45, tickR);
-      }
-      tickR();
     }
 
     function reset() {
       clearAll();
       lines.forEach(function (l) { l.classList.remove("printed"); });
-      amountEl.textContent = "₦0.00";
-      refEl.textContent = "1785······";
-      statusEl.innerHTML = 'processing<span style="color:var(--naira-bright)">_</span>';
       stamp.classList.remove("pressed"); stamp.style.opacity = "0";
       head.style.transition = "none"; head.style.opacity = "0"; head.style.top = "0";
     }
@@ -875,18 +712,12 @@
       lines.forEach(function (l, i) {
         after(180 + i * 230, function () {
           l.classList.add("printed");
-          if (l.querySelector("#rcpt-amount")) count(NGN, 900);
-          if (l.querySelector("#rcpt-ref")) scrambleRef(finalRef(), 650);
         });
       });
-      // settle
-      var settleAt = 180 + lines.length * 230 + 350;
-      after(settleAt, function () {
-        statusEl.innerHTML = "settled";
-        stamp.classList.add("pressed");
-      });
+      var printCompleteAt = 180 + lines.length * 230 + 350;
+      after(printCompleteAt, function () { stamp.classList.add("pressed"); });
       // hold, then loop
-      after(settleAt + 3600, run);
+      after(printCompleteAt + 3600, run);
     }
 
     // Kick off when hero receipt is on screen
