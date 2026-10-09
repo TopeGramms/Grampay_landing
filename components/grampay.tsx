@@ -330,13 +330,24 @@ function WhatsAppDemo({ compact = false }: { compact?: boolean }) {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 24); window.addEventListener('scroll', onScroll); return () => window.removeEventListener('scroll', onScroll); }, []);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
   const close = () => setOpen(false);
   return (
     <header className={`nav-shell ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <nav className="navbar" aria-label="Primary navigation"><Link href="#top" onClick={close}><Logo /></Link><div className="mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page">Personal</Link><Link href="/developers">Developers</Link></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
-        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page" onClick={close}>Personal</Link><Link href="/developers" onClick={close}>Developers</Link></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
+        <nav className="navbar" aria-label="Primary navigation"><Link href="#top" onClick={close}><Logo /></Link><div className="mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page">Personal</Link><Link href="/mcp-landing.html">Developers</Link></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="personal-mobile-nav" onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
+        <AnimatePresence>{open && <motion.nav id="personal-mobile-nav" className="mobile-drawer" aria-label="Mobile navigation" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page" onClick={close}>Personal</Link><Link href="/mcp-landing.html" onClick={close}>Developers</Link></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.nav>}</AnimatePresence>
       </div>
     </header>
   );
@@ -430,5 +441,5 @@ export function FinalCTA() {
 }
 
 export function Footer() {
-  return <footer className="footer"><div className="container"><div className="footer-row"><div className="footer-brand"><Logo /><p>Money movement, through a conversation.</p></div><div className="footer-links"><a href="#features">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a href="/developers">Developers</a><a href={waLink} target="_blank" rel="noreferrer">Contact</a></div></div><div className="footer-bottom"><span>© 2026 GramPay</span><span>Personal · WhatsApp</span></div></div></footer>;
+  return <footer className="footer"><div className="container"><div className="footer-row"><div className="footer-brand"><Logo /><p>Money movement, through a conversation.</p></div><div className="footer-links"><a href="#features">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a href="/mcp-landing.html">Developers / MCP</a><a href={waLink} target="_blank" rel="noreferrer">Contact</a></div></div><div className="footer-bottom"><span>© 2026 GramPay</span><span>Personal · WhatsApp</span></div></div></footer>;
 }

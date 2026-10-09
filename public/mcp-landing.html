@@ -442,6 +442,10 @@
 
   @media (max-width: 620px) {
     body { font-size: 16px; }
+    nav.links { display: none; }
+    .hero-grid, .hero-grid > * { min-width: 0; }
+    .hero-grid h1, .hero-grid .lede { width: 100%; max-width: 100%; overflow-wrap: anywhere; }
+    .experience-switch a { min-height: 34px; display: inline-flex; align-items: center; font-size: 0.62rem; padding-inline: 8px; }
     .foot-in { flex-direction: column; }
   }
 </style>
@@ -598,6 +602,7 @@
         <p>One financial platform. WhatsApp for people; MCP for AI agents.</p>
       </div>
       <div class="foot-links" id="contact">
+        <a href="/" aria-label="Return to the GramPay personal experience">Personal · WhatsApp</a>
         <a href="https://wa.me/2349135428476">WhatsApp</a>
         <a href="mailto:grampayhq@gmail.com">Gmail</a>
         <a href="https://x.com/TopeGramms">X / Twitter</a>

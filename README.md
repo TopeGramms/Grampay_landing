@@ -28,7 +28,7 @@ The **Developers** link in the Personal navigation opens the full MCP landing pa
 - Tailwind CSS / PostCSS
 - Framer Motion
 - Lucide React
-- Static export to `out/`
+- Standard Next.js deployment on Vercel
 
 The Personal page is implemented with reusable React sections in [`components/grampay.tsx`](./components/grampay.tsx). The Developers page is standalone HTML, preserving its own layout, motion, and receipt-inspired visual treatment.
 
@@ -53,7 +53,7 @@ http://localhost:3000/mcp-landing.html
 npm run build
 ```
 
-The static site is generated in `out/`, including both `index.html` and `mcp-landing.html`.
+The production build is generated in `.next/`. Vercel detects the Next.js framework and deploys the application using its native Next.js integration. The standalone Developers/MCP page remains available from `public/mcp-landing.html`.
 
 ## Repository structure
 
@@ -62,7 +62,7 @@ app/                  Next.js app shell and homepage
 components/           Personal GramPay React sections
 public/mcp-landing.html  Standalone Developers/MCP experience
 public/               Static assets and route manifest
-out/                  Generated static export
+.next/                Generated Next.js production build (local output)
 ```
 
 ## Product positioning
