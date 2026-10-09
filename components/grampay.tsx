@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
-  CircleDot,
   Landmark,
   Menu,
   MessageCircle,
@@ -15,6 +14,7 @@ import {
   ShieldCheck,
   X,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const waLink = 'https://wa.me/2349135428476';
@@ -42,38 +42,285 @@ function Reveal({ children, className = '', delay = 0, priority = false }: { chi
   return <motion.div className={className} variants={reveal} initial={priority || reduceMotion ? false : 'hidden'} animate={priority || reduceMotion ? 'visible' : undefined} whileInView="visible" viewport={{ once: true, amount: 0.18 }} transition={{ delay: reduceMotion ? 0 : delay, duration: reduceMotion ? 0 : undefined }}>{children}</motion.div>;
 }
 
+type DemoSceneKey = 'transfer' | 'airtime' | 'data';
+
+type DemoBubble = {
+  key: string;
+  kind: 'user' | 'assistant' | 'typing' | 'review' | 'processing' | 'success';
+  at: number;
+  text?: string;
+  meta?: string;
+  title?: string;
+  amount?: string;
+  label?: string;
+  details?: Array<{ label: string; value: string }>; 
+  reference?: string;
+  phone?: string;
+};
+
+const demoSceneOrder: DemoSceneKey[] = ['transfer', 'airtime', 'data'];
+
+const demoScenes: Record<DemoSceneKey, DemoBubble[]> = {
+  transfer: [
+    { key: 'transfer-user-1', kind: 'user', at: 0, text: 'Send ₦25,000 to David for me.', meta: '10:41' },
+    { key: 'transfer-typing', kind: 'typing', at: 1 },
+    { key: 'transfer-assistant-1', kind: 'assistant', at: 2, text: 'Sure. Let me confirm the recipient before we continue.', meta: '10:41' },
+    { key: 'transfer-review', kind: 'review', at: 3, title: 'PAYMENT REVIEW', amount: '₦25,000.00', details: [
+      { label: 'Recipient', value: 'David Okafor' },
+      { label: 'Bank', value: 'GTBank' },
+      { label: 'Fee', value: '₦150.00 illustrative' },
+    ] },
+    { key: 'transfer-assistant-2', kind: 'assistant', at: 5, text: 'Please review and authorize the payment.', meta: '10:42' },
+    { key: 'transfer-user-2', kind: 'user', at: 6, text: 'Confirm transfer.', meta: '10:42' },
+    { key: 'transfer-processing', kind: 'processing', at: 7 },
+    { key: 'transfer-success', kind: 'success', at: 8, title: 'Transfer successful', amount: '₦25,000.00', reference: 'TXN 4R9M-1028', label: 'David Okafor', meta: '10:42' },
+  ],
+  airtime: [
+    { key: 'airtime-user-1', kind: 'user', at: 0, text: 'Buy ₦2,000 airtime for me.', meta: '10:41' },
+    { key: 'airtime-typing', kind: 'typing', at: 1 },
+    { key: 'airtime-assistant-1', kind: 'assistant', at: 2, text: 'Sure! Which network should I use?', meta: '10:41' },
+    { key: 'airtime-user-2', kind: 'user', at: 3, text: 'MTN.', meta: '10:41' },
+    { key: 'airtime-review', kind: 'review', at: 4, title: 'AIRTIME PURCHASE', amount: '₦2,000.00', details: [
+      { label: 'Network', value: 'MTN' },
+      { label: 'Phone', value: '0803 XXX XXXX' },
+      { label: 'Payment', value: 'GramPay balance' },
+    ] },
+    { key: 'airtime-assistant-2', kind: 'assistant', at: 5, text: 'Please confirm your airtime purchase.', meta: '10:42' },
+    { key: 'airtime-user-3', kind: 'user', at: 6, text: 'Confirm.', meta: '10:42' },
+    { key: 'airtime-processing', kind: 'processing', at: 7 },
+    { key: 'airtime-success', kind: 'success', at: 8, title: 'Airtime purchase successful', amount: '₦2,000.00', reference: 'TXN MTN-2104', label: '0803 XXX XXXX', meta: '10:42' },
+  ],
+  data: [
+    { key: 'data-user-1', kind: 'user', at: 0, text: 'Buy 5GB data for me.', meta: '10:41' },
+    { key: 'data-typing', kind: 'typing', at: 1 },
+    { key: 'data-assistant-1', kind: 'assistant', at: 2, text: 'Which network should I use?', meta: '10:41' },
+    { key: 'data-user-2', kind: 'user', at: 3, text: 'Airtel.', meta: '10:41' },
+    { key: 'data-review', kind: 'review', at: 4, title: 'DATA BUNDLE', amount: '₦1,500.00', details: [
+      { label: 'Network', value: 'Airtel' },
+      { label: 'Bundle', value: '5GB · 30 days' },
+      { label: 'Phone', value: '0802 XXX XXXX' },
+    ] },
+    { key: 'data-assistant-2', kind: 'assistant', at: 5, text: 'Here is your data bundle. Please review before confirming.', meta: '10:42' },
+    { key: 'data-user-3', kind: 'user', at: 6, text: 'Confirm.', meta: '10:42' },
+    { key: 'data-processing', kind: 'processing', at: 7 },
+    { key: 'data-success', kind: 'success', at: 8, title: 'Data purchase successful', amount: '5GB data', reference: 'TXN AIR-4428', label: '0802 XXX XXXX', meta: '10:42' },
+  ],
+};
+
+function DemoReviewCard({ bubble }: { bubble: DemoBubble }) {
+  const details = bubble.details ?? [];
+
+  return (
+    <motion.div
+      key={bubble.key}
+      className="demo-review-card"
+      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <p className="demo-review-label">{bubble.title}</p>
+      {bubble.amount && <div className="demo-review-amount">{bubble.amount}</div>}
+      <div className="demo-review-list">
+        {details.map((detail) => (
+          <div className="demo-review-row" key={`${bubble.key}-${detail.label}`}>
+            <span>{detail.label}</span>
+            <strong>{detail.value}</strong>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 function WhatsAppDemo({ compact = false }: { compact?: boolean }) {
   const reduceMotion = useReducedMotion();
-  const [step, setStep] = useState(reduceMotion ? 10 : 0);
+  const [scene, setScene] = useState<DemoSceneKey>('transfer');
+  const [step, setStep] = useState(0);
+
+  const sceneData = demoScenes[scene];
+  const totalSteps = sceneData.length - 1;
+
   useEffect(() => {
-    if (reduceMotion) { setStep(10); return; }
-    const timer = window.setInterval(() => setStep((current) => (current >= 11 ? 0 : current + 1)), 1100);
-    return () => window.clearInterval(timer);
-  }, [reduceMotion]);
-  const show = (n: number) => reduceMotion || step >= n;
-  const activeStatus = Math.min(Math.max(step - 7, 0), 3);
-  const statuses = ['Verifying', 'Authorizing', 'Processing', 'Successful'];
+    if (reduceMotion) {
+      setStep(totalSteps);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      if (step >= totalSteps) {
+        const currentIndex = demoSceneOrder.indexOf(scene);
+        const nextScene = demoSceneOrder[(currentIndex + 1) % demoSceneOrder.length];
+        setScene(nextScene);
+        setStep(0);
+        return;
+      }
+
+      setStep((current) => current + 1);
+    }, 1200);
+
+    return () => window.clearTimeout(timer);
+  }, [reduceMotion, scene, step, totalSteps]);
+
+  const switchScene = (nextScene: DemoSceneKey) => {
+    setScene(nextScene);
+    setStep(0);
+  };
+
+  const visibleItems = sceneData.filter((item) => item.at <= step);
 
   return (
     <div className={`chat-frame ${compact ? 'chat-frame-compact' : ''}`}>
-      <div className="chat-window">
-        <div className="chat-topbar">
-          <div className="chat-person"><div className="avatar">G</div><div><div className="chat-name">GramPay assistant</div><div className="chat-state">online · ready to help</div></div></div>
-          <div className="topbar-meta"><MoreHorizontal size={18} /></div>
+      <div className="demo-selector" aria-label="WhatsApp demo scenarios">
+        {demoSceneOrder.map((key) => (
+          <button
+            key={key}
+            type="button"
+            className={scene === key ? 'active' : ''}
+            onClick={() => switchScene(key)}
+            aria-pressed={scene === key}
+          >
+            {key === 'transfer' ? 'Transfers' : key === 'airtime' ? 'Airtime' : 'Data'}
+          </button>
+        ))}
+      </div>
+
+      <div className="iphone-shell" aria-live="polite">
+        <div className="iphone-frame-shadow" aria-hidden="true" />
+        <div className="dynamic-island" aria-hidden="true">
+          <span className="dynamic-pill" />
         </div>
-        <div className="chat-body" aria-live="polite">
-          <div className="chat-date">TODAY</div>
-          <AnimatePresence initial={false} mode="popLayout">
-            {show(0) && <motion.div key="hello" className="bubble user" initial={{ opacity: 0, y: 10, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .35 }}>Send ₦25,000 to David<span className="bubble-meta">10:41</span></motion.div>}
-            {step === 1 && !reduceMotion && <motion.div key="typing" className="bubble typing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span /><span /><span /></motion.div>}
-            {show(2) && <motion.div key="found" className="bubble assistant" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>Got it. I found David&apos;s account.<span className="bubble-meta">10:41</span></motion.div>}
-            {show(3) && <motion.div key="recipient" className="recipient-card"><p>RECIPIENT FOUND</p><strong>David Okafor</strong><div className="recipient-line"><span className="bank-dot" />GTBank <span>·</span> **** 4821</div></motion.div>}
-            {show(4) && <motion.div key="confirm" className="bubble assistant" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>Send ₦25,000?<div className="bubble-meta">Review before you confirm</div></motion.div>}
-            {show(5) && <motion.div key="yes" className="bubble user" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>Yes<span className="bubble-meta">10:42</span></motion.div>}
-            {show(6) && <motion.div key="pin" className="bubble assistant" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>Enter your PIN to authorize this payment.<span className="bubble-meta">Your PIN stays private</span></motion.div>}
-            {show(7) && <motion.div key="rail" className="transaction-rail" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .4 }}>{statuses.map((status, index) => <span className="rail-step-wrap" key={status}><span className={`rail-step ${index < activeStatus ? 'done' : ''} ${index === activeStatus ? 'active' : ''}`}>{index < activeStatus ? <Check size={10} /> : <CircleDot size={10} />}{status}</span>{index < statuses.length - 1 && <span className={`rail-line ${index < activeStatus ? 'active' : ''}`} />}</span>)}</motion.div>}
-            {show(10) && <motion.div key="success" className="bubble assistant success-bubble" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5 }}><span className="success-check"><Check size={12} /></span><span>₦25,000 sent successfully<span className="bubble-meta">Transaction complete · 10:42</span></span></motion.div>}
-          </AnimatePresence>
+        <div className="side-button side-button-top" aria-hidden="true" />
+        <div className="side-button side-button-mid" aria-hidden="true" />
+        <div className="side-button side-button-bottom" aria-hidden="true" />
+
+        <div className="chat-shell">
+          <div className="status-bar" aria-hidden="true">
+            <span className="time">9:41</span>
+            <span className="device-status">
+              <span className="signal-bars"><i /><i /><i /><i /></span>
+              <span className="wifi-indicator" />
+              <span className="battery"><span /></span>
+            </span>
+          </div>
+
+          <div className="chat-window">
+            <div className="chat-topbar">
+              <div className="chat-person">
+                <div className="avatar">G</div>
+                <div>
+                  <div className="chat-name">GramPay</div>
+                  <div className="chat-state">online</div>
+                </div>
+              </div>
+              <div className="topbar-actions" aria-hidden="true">
+                <span className="icon-call" />
+                <span className="icon-video" />
+                <MoreHorizontal size={17} />
+              </div>
+            </div>
+
+            <div className="chat-body">
+              <div className="chat-date">TODAY</div>
+              <AnimatePresence initial={false} mode="popLayout">
+                {visibleItems.map((bubble) => {
+                  if (bubble.kind === 'user') {
+                    return (
+                      <motion.div
+                        key={bubble.key}
+                        className="bubble user"
+                        initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        {bubble.text}
+                        <span className="bubble-meta">{bubble.meta}</span>
+                      </motion.div>
+                    );
+                  }
+
+                  if (bubble.kind === 'assistant') {
+                    return (
+                      <motion.div
+                        key={bubble.key}
+                        className="bubble assistant"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        {bubble.text}
+                        <span className="bubble-meta">{bubble.meta}</span>
+                      </motion.div>
+                    );
+                  }
+
+                  if (bubble.kind === 'typing') {
+                    return (
+                      <motion.div
+                        key={bubble.key}
+                        className="bubble typing"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.28 }}
+                      >
+                        <span />
+                        <span />
+                        <span />
+                      </motion.div>
+                    );
+                  }
+
+                  if (bubble.kind === 'review') {
+                    return <DemoReviewCard key={bubble.key} bubble={bubble} />;
+                  }
+
+                  if (bubble.kind === 'processing') {
+                    return (
+                      <motion.div
+                        key={bubble.key}
+                        className="demo-processing"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <span className="processing-spinner" aria-hidden="true" />
+                        <span>Processing</span>
+                      </motion.div>
+                    );
+                  }
+
+                  return (
+                    <motion.div
+                      key={bubble.key}
+                      className="bubble assistant success-bubble"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <span className="success-check"><Check size={12} /></span>
+                      <div className="success-copy">
+                        <strong>{bubble.title}</strong>
+                        <span>{bubble.amount}</span>
+                        <em>{bubble.label}</em>
+                        <small>{bubble.reference}</small>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+
+            <div className="chat-composer" aria-label="Message composer">
+              <span className="composer-attachment" aria-hidden="true">+</span>
+              <span className="composer-input">Type a message</span>
+              <span className="composer-mic" aria-hidden="true" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -88,8 +335,8 @@ export function Navbar() {
   return (
     <header className={`nav-shell ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <nav className="navbar" aria-label="Primary navigation"><a href="#top" onClick={close}><Logo /></a><div className="mode-switch" role="group" aria-label="Choose GramPay experience"><a className="active" href="/" aria-current="page">Personal</a><a href="/developers">Developers</a></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
-        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch" role="group" aria-label="Choose GramPay experience"><a className="active" href="/" aria-current="page" onClick={close}>Personal</a><a href="/developers" onClick={close}>Developers</a></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
+        <nav className="navbar" aria-label="Primary navigation"><Link href="#top" onClick={close}><Logo /></Link><div className="mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page">Personal</Link><Link href="/developers">Developers</Link></div><div className="nav-links"><a className="nav-link" href="#how-it-works">How it works</a><a className="nav-link" href="#features">Features</a><a className="nav-link" href="#security">Security</a><a className="nav-link" href="#faq">FAQ</a></div><a className="nav-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={14} /></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X size={21} /> : <Menu size={21} />}</button></nav>
+        <AnimatePresence>{open && <motion.div className="mobile-drawer" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}><div className="mobile-mode-switch" role="group" aria-label="Choose GramPay experience"><Link className="active" href="/" aria-current="page" onClick={close}>Personal</Link><Link href="/developers" onClick={close}>Developers</Link></div><a href="#how-it-works" onClick={close}>How it works</a><a href="#features" onClick={close}>Features</a><a href="#security" onClick={close}>Security</a><a href="#faq" onClick={close}>FAQ</a><a className="mobile-cta" href={waLink} target="_blank" rel="noreferrer">Try on WhatsApp <ArrowRight size={13} /></a></motion.div>}</AnimatePresence>
       </div>
     </header>
   );
